@@ -12,21 +12,26 @@ chat_messages = []
 class Message(BaseModel):
     body: str
     author: str
-    date : datetime
+   # date : datetime
+
+class Room():
+    def __init__(self) -> None:
+        #self.app = FastAPI()
+        self.messages =[]
 
 @app.get("/chat")
-def get_chat():
-    return chat_messages
+def get_chat(room: Room):
+    return room.messages
 
 @app.post("/chat")
-def send_message(message: Message):
+def send_message(message: Message, room: Room):
     timestamp = datetime.now()
     chat_message = {
         "body": message.body,
         "author": message.author,
         "date": timestamp
     }
-    chat_messages.append(chat_message)
+    room.messages.append(chat_message)
     return chat_message
 
 if __name__ == "__main__":
