@@ -1,4 +1,5 @@
 # chat_app.py
+# http://127.0.0.1:8000/docs#
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -7,31 +8,42 @@ from typing import Dict
 
 app = FastAPI()
 
-# In-memory storage for chat messages
-chat_rooms: Dict[str, list] = {}  # A dictionary to store messages by room name
-
 class Message(BaseModel):
     body: str
     author: str
 
-@app.get("/chat/{room_name}")
-def get_chat(room_name: str):
-    if room_name not in chat_rooms:
-        chat_rooms[room_name] = []  # Create the room if it doesn't exist
-    return chat_rooms.get(room_name)
+class Room(BaseModel):
+    id: str
+    messages: list[str]
 
-@app.post("/chat/{room_name}")
-def send_message(room_name: str, message: Message):
-    if room_name not in chat_rooms:
-        chat_rooms[room_name] = []  # Create the room if it doesn't exist
+rooms = []  #list[Room]
+
+@app.post("/chat/create/{room_id}")
+def create_room(room_id: str):
+    rooms.append(Room(id= room_id, messages= []))
+    return "room created"
+
+@app.get("/chat/{room_id}")
+def get_chat(room_id: str):
+    for room in rooms:
+        if room_id == room.id:
+            c_room = room                                                                          
+    return c_room.messages
+
+@app.post("/chat/{room_id}/send")
+def send_message(room_id: str, message: Message):
+    for room in rooms:
+        if room_id == room.id:
+            c_room = room  
+
     timestamp = datetime.now()
     chat_message = {
         "body": message.body,
         "author": message.author,
         "date": timestamp
     }
-    chat_rooms[room_name].append(chat_message)
-    return chat_message
+    c_room.messages.append(chat_message)
+    return f"message send to chatroom {c_room.id}"
 
 if __name__ == "__main__":
     import uvicorn

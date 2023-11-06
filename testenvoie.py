@@ -4,7 +4,9 @@ import API
 
 
 mess = Message(body="Hello, World!", author="John")
-room = Room()
+room = Room(id="prout", messages=[])
 
-API.send_message(mess, room)
-print(API.get_chat(room))
+
+API.create_room("prout")
+API.send_message("prout", mess)
+print(API.get_chat("prout"))
