@@ -18,19 +18,19 @@ class Room(BaseModel):
 
 rooms = []  #list[Room]
 
-@app.post("/chat/create/{room_id}")
-def create_room(room_id: str):
-    rooms.append(Room(id= room_id, messages= []))
-    return "room created"
-
-@app.get("/chat/{room_id}")
+@app.get("/chat/{room_id}", tags= ['ChatRoom'])
 def get_chat(room_id: str):
     for room in rooms:
         if room_id == room.id:
             c_room = room                                                                          
     return c_room.messages
 
-@app.post("/chat/{room_id}/send")
+@app.post("/chat/create/{room_id}", tags= ['ChatRoom'])
+def create_room(room_id: str):
+    rooms.append(Room(id= room_id, messages= []))
+    return "room created"
+
+@app.post("/chat/{room_id}/send", tags= ['Chat'])
 def send_message(room_id: str, message: Message):
     for room in rooms:
         if room_id == room.id:
