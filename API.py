@@ -14,7 +14,7 @@ class Message(BaseModel):
 
 class Room(BaseModel):
     id: str
-    messages: list[str]
+    messages: list[Message]
 
 rooms = []  #list[Room]
 
@@ -37,12 +37,12 @@ def send_message(room_id: str, message: Message):
             c_room = room  
 
     timestamp = datetime.now()
-    chat_message = {
-        "body": message.body,
-        "author": message.author,
-        "date": timestamp
-    }
-    c_room.messages.append(chat_message)
+    #chat_message = {
+    #    "body": message.body,
+    #    "author": message.author,
+    #    "date": timestamp
+    #}
+    c_room.messages.append(message)  
     return f"message send to chatroom {c_room.id}"
 
 if __name__ == "__main__":
