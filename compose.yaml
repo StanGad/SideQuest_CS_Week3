@@ -1,0 +1,9 @@
+services:
+  api_test:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - "../db:/database"
+    image: "a13e76c6c8b8"
+    

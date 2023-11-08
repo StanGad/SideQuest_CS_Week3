@@ -1,6 +1,6 @@
-from API import Message
-from API import Room
-import API
+from SideQuest_CS_Week3.chatroom.API import Message
+from SideQuest_CS_Week3.chatroom.API import Room
+import SideQuest_CS_Week3.chatroom.API as API
 
 
 mess = Message(body="Hello, World!", author="John")

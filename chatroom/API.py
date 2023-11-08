@@ -16,6 +16,7 @@ class Room(BaseModel):
     id: str
     messages: list[Message]
 
+
 rooms = []  #list[Room]
 
 @app.get("/chat/{room_id}", tags= ['ChatRoom'])
