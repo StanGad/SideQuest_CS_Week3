@@ -14,7 +14,7 @@ class Message(BaseModel):
 
 class Room(BaseModel):
     id: str
-    messages: list[Message]
+    messages: list[Message] 
 
 
 rooms = []  #list[Room]
@@ -33,9 +33,11 @@ def create_room(room_id: str):
 
 @app.post("/chat/{room_id}/send", tags= ['Chat'])
 def send_message(room_id: str, message: Message):
+    room_exist = False
     for room in rooms:
         if room_id == room.id:
             c_room = room  
+            room_exist = True
 
     timestamp = datetime.now()
     #chat_message = {
@@ -43,8 +45,12 @@ def send_message(room_id: str, message: Message):
     #    "author": message.author,
     #    "date": timestamp
     #}
-    c_room.messages.append(message)  
-    return f"message send to chatroom {c_room.id}"
+
+    if room_exist:
+        c_room.messages.append(message)  
+        return f"message send to chatroom {c_room.id}"
+    else: 
+        return "La room n'existe pas"
 
 if __name__ == "__main__":
     import uvicorn
